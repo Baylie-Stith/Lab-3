@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>PHP Multiplication Table</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    background: #f4f6f9;
+    padding: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  h1 { color: #333; }
+
+  form {
+    background: white;
+    padding: 20px 26px;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+    margin-bottom: 30px;
+  }
+
+  input[type="number"] {
+    padding: 6px;
+    width: 80px;
+    margin-right: 10px;
+  }
+
+  button {
+    padding: 7px 16px;
+    background: #4361ee;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+
+  button:hover { background: #3651c9; }
+
+  table {
+    border-collapse: collapse;
+    background: white;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.06);
+  }
+
+  th, td {
+    border: 1px solid #ddd;
+    padding: 8px 12px;
+    text-align: center;
+  }
+
+  th {
+    background: #4361ee;
+    color: white;
+  }
+
+  th.corner {
+    background: #333;
+  }
+
+  .error {
+    color: #c0392b;
+    font-weight: bold;
+  }
+</style>
+</head>
+<body>
+
+<h1>Multiplication Table Generator</h1>
+
+<form method="post" action="">
+  <label for="number">Enter a number:</label><br><br>
+  <input type="number" id="number" name="number"
+         value="<?php echo isset($_POST['number']) ? htmlspecialchars($_POST['number']) : ''; ?>">
+  <button type="submit">Generate</button>
+</form>
+
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['number']) && $_POST['number'] !== '') {
+
+    $number = $_POST['number'];
+
+    if (!is_numeric($number) || intval($number) != $number || intval($number) < 1) {
+        echo '<p class="error">Please enter a positive whole number.</p>';
+    } else {
+        $number = intval($number);
+        ?>
+        <table>
+            <tr>
+                <th class="corner">&times;</th>
+                <?php for ($col = 1; $col <= $number; $col++): ?>
+                    <th><?php echo $col; ?></th>
+                <?php endfor; ?>
+            </tr>
+
+            <?php for ($row = 1; $row <= $number; $row++): ?>
+                <tr>
+                    <th><?php echo $row; ?></th>
+                    <?php for ($col = 1; $col <= $number; $col++): ?>
+                        <td><?php echo $row * $col; ?></td>
+                    <?php endfor; ?>
+                </tr>
+            <?php endfor; ?>
+        </table>
+        <?php
+    }
+}
+?>
+
+</body>
+</html>
